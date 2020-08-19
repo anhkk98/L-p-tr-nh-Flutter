@@ -1,0 +1,20 @@
+void _pushTintuc() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return Tintuc();
+    }));
+  }
+  
+  //
+  hoặc
+  //
+  void _pushTintuc() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("abc"),
+        ),
+      );
+    }));
+  }
