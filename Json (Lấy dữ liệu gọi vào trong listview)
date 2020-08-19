@@ -1,0 +1,69 @@
+// vào trang https://app.quicktype.io/ để chuyển đổi json sang model.
+//cài thêm:    http: ^0.12.2
+
+
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:hello_word/Model/Luatxemay.dart';
+class Xemay extends StatefulWidget {
+  @override
+  _XemayApp createState() => new _XemayApp();
+}
+class _XemayApp extends State<Xemay> {
+
+  List<Luatxemay> _luatxm;
+  bool _loading;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loading = true;
+    Services.getLuatxemay().then((luatxm) {
+      setState(() {
+        _luatxm = luatxm;
+        _loading = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text(_loading ? 'Đang tải, vui lòng chờ....' : 'Xử phạt giao thông (Xe máy)'),
+        ),
+      ),
+      body: Container(
+        child: ListView.builder(
+
+            itemCount: null == _luatxm ? 0 : _luatxm.length,
+            itemBuilder: (context,index){
+              Luatxemay luatxemay = _luatxm[index];
+              return ListTile(
+                title: Text(luatxemay.tenluat, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),),
+                subtitle: Text(luatxemay.tienphat),
+              );
+        }),
+      ),
+    );
+  }
+}
+/////////////////////////////////////////////////////////////// riêng
+class Services {
+  static const String url = 'https://gist.githubusercontent.com/anhkk98/98ff4eb59d0d1a55a47a75fe154a0a25/raw/2aa0ad5b3dc6576b81db8472b28c126f10811497/luatxemay';
+  static Future<List<Luatxemay>> getLuatxemay() async {
+    try{
+      final response = await http.get(url);
+      if(200 == response.statusCode) {
+        final List<Luatxemay> luatxm = luatxemayFromJson(response.body);
+        return luatxm;
+      }
+    }catch(e) {
+      return List<Luatxemay>();
+    }
+  }
+}
