@@ -1,0 +1,68 @@
+Widget _headerDrawer(context) {
+    return new Drawer(
+      child: new ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          UserAccountsDrawerHeader(accountName: Text("AVGiaoThong", style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold),), accountEmail: Text("anhkk98@gmail.com"),
+          decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/image/header2.jpg'),fit: BoxFit.fill),
+          ),
+            currentAccountPicture: GestureDetector(
+              child: CircleAvatar(
+                backgroundColor: Colors.red,
+                child: Icon(Icons.star, color: Colors.yellow,),
+              ),
+
+            ),
+
+          ),
+          new ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Trang chủ"),
+          ),
+          new ListTile(
+            leading: Icon(Icons.traffic,color: Colors.red,),
+            title: Text("Xử phạt giao thông"),
+            onTap: () {
+              _pushXpgt();
+            },
+          ),
+          new ListTile(
+            leading: Icon(Icons.directions, color: Colors.blue,),
+            title: Text("Biển báo giao thông"),
+            onTap: () {
+              _pushBbgt();
+            },
+          ),
+          new ListTile(
+            leading: Icon(Icons.assignment,color: Colors.pink,),
+            title: Text("Tin tức"),
+            onTap: () {
+              _pushTintuc();
+            },
+          ),
+          new ListTile(
+            leading: Icon(Icons.error_outline,color: Colors.green,),
+            title: Text("Giới thiệu App"),
+            onTap: () {
+              _pushThongtin();
+            },
+          ),
+          new ListTile(
+            leading: Icon(Icons.phone_android,color: Colors.black,),
+            title: Text("Liên hệ"),
+            onTap: () {
+              _pushLienhe();
+            },
+          ),
+          new ListTile(
+            leading: Icon(Icons.exit_to_app,color: Colors.red,),
+            title: Text("Thoát"),
+            onTap: () {
+              _pushThoat();
+            },
+          )
+        ],
+      ),
+    );
+  }
