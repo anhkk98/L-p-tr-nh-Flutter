@@ -1,0 +1,75 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+class Horizontallistview extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      height: 90.0,
+      child: ListView(
+        scrollDirection: Axis.horizontal, // cuộn theo chiều ngang
+        children: [
+          Category(
+            image_location: 'assets/image/xpgt.png',
+            image_caption: "Xử phạt GT",
+          ),
+          Category(
+            image_location: 'assets/image/btgt.png',
+            image_caption: "Biển báo GT",
+          ),
+          Category(
+            image_location: 'assets/image/tndc.png',
+            image_caption: "Tính NĐC",
+          ),
+          Category(
+            image_location: 'assets/image/tintuc.png',
+            image_caption: "Tin tức GT",
+          ),
+          Category(
+            image_location: 'assets/image/gioithieu.png',
+            image_caption: "Tin tức GT",
+          ),
+          Category(
+            image_location: 'assets/image/lienhe.png',
+            image_caption: "Tin tức GT",
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Category extends StatelessWidget {
+  final String image_location;
+  final String image_caption;
+
+  Category({this.image_location, this.image_caption});
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Padding(
+      padding: EdgeInsets.all(6.0),
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          width: 100.0,
+          child: ListTile(
+            title: Image.asset(
+              image_location,
+              width: 100.0,
+              height: 60.0,
+            ),
+            subtitle: Container(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  image_caption,
+                  style: TextStyle(fontSize: 12.0),
+                )),
+          ),
+        ),
+      ),
+    );
+  }
+}
