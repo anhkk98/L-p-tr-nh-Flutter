@@ -1,0 +1,23 @@
+Widget _image_carousel = new Container(
+      height: 200.0,
+      child: Carousel(
+        boxFit: BoxFit.cover,
+        images: [
+          AssetImage('assets/image/atgt.jpg'),
+          AssetImage('assets/image/atgt1.jpg'),
+          AssetImage('assets/image/atgt2.jpg'),
+        ],
+        autoplay: true,
+        //animationCurve: Curves.fastOutSlowIn,
+        //animationDuration: Duration(milliseconds: 1000),
+        dotSize: 4.0,
+        indicatorBgPadding: 3.0,
+      ),
+    );
+    
+   ///
+   body: ListView(
+        children: <Widget>[
+          _image_carousel
+        ],
+      ),
