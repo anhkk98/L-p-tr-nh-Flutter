@@ -3,19 +3,22 @@ Widget _headerDrawer(context) {
       child: new ListView(
         padding: EdgeInsets.zero,
         children: [
+        
+        // phần headerDrawer trên
           UserAccountsDrawerHeader(accountName: Text("AVGiaoThong", style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold),), accountEmail: Text("anhkk98@gmail.com"),
           decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage('assets/image/header2.jpg'),fit: BoxFit.fill),
           ),
+          // account
             currentAccountPicture: GestureDetector(
               child: CircleAvatar(
                 backgroundColor: Colors.red,
                 child: Icon(Icons.star, color: Colors.yellow,),
               ),
-
             ),
-
           ),
+          
+          // phần danh sách danh mục dưới
           new ListTile(
             leading: Icon(Icons.home),
             title: Text("Trang chủ"),
