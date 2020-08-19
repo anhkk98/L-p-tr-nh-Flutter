@@ -52,7 +52,7 @@ class _XemayApp extends State<Xemay> {
     );
   }
 }
-/////////////////////////////////////////////////////////////// riêng
+/////////////////////////////////////////////////////////////// tạo lớp này trước....
 class Services {
   static const String url = 'https://gist.githubusercontent.com/anhkk98/98ff4eb59d0d1a55a47a75fe154a0a25/raw/2aa0ad5b3dc6576b81db8472b28c126f10811497/luatxemay';
   static Future<List<Luatxemay>> getLuatxemay() async {
