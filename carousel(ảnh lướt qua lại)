@@ -1,3 +1,5 @@
+cài thêm:    carousel_pro: ^1.0.0
+
 Widget _image_carousel = new Container(
       height: 200.0,
       child: Carousel(
