@@ -1,0 +1,208 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' show get;
+
+// khai báo dữ liệu trong bảng cơ sở dữ liệu (Model)
+class Hieulenh_model{
+  final String id;
+  final String tenloihloto, phattienhloto, noidunghloto, anhhloto;
+
+  Hieulenh_model({this.id, this.tenloihloto, this.phattienhloto,
+    this.noidunghloto, this.anhhloto});
+
+  factory Hieulenh_model.fromJson(Map<String, dynamic> jsonData) {
+    return Hieulenh_model(
+      id: jsonData['id'],
+      tenloihloto: jsonData['tenloihloto'],
+      phattienhloto: jsonData['phattienhloto'],
+      noidunghloto: jsonData['noidunghloto'],
+      anhhloto: jsonData['anhhloto'],
+    );
+  }
+}
+
+class Hieulenhoto extends StatelessWidget {
+  final List<Hieulenh_model> hieulenhotos;
+  Hieulenhoto(this.hieulenhotos);
+
+  Widget build(context) {
+    return ListView.builder(
+        itemCount: hieulenhotos.length,
+        itemBuilder: (context, index) {
+          return createViewItem(hieulenhotos[index], context);
+        });
+  }
+
+  Widget createViewItem(Hieulenh_model hieulenhoto, BuildContext context) {
+    return new ListTile(
+      title: new Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.orange),
+        ),
+        padding: EdgeInsets.all(1.0),
+        margin: EdgeInsets.all(5.0),
+        child: new Row(
+          children: [
+            Image.network(
+              hieulenhoto.anhhloto,
+              width: 70,
+              height: 150,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  new Container(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      "Lỗi: " + hieulenhoto.tenloihloto,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text(
+                    'Phạt tiền từ: ' + hieulenhoto.phattienhloto,
+                    style: TextStyle(color: Colors.red),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+      onTap: () {
+        var router = new MaterialPageRoute(
+          builder: (BuildContext context) =>
+              new SecondScreen(value: hieulenhoto),
+        );
+        Navigator.of(context).push(router);
+      },
+    );
+  }
+}
+
+Future<List<Hieulenh_model>> dowloadJSON() async {
+  final url = "http://antoangiaothong.atwebpages.com/gethieulenhoto.php";
+  final reponse = await get(url);
+  if (reponse.statusCode == 200) {
+    List hieulenhotos = json.decode(reponse.body);
+    return hieulenhotos
+        .map((hieulenhoto) => new Hieulenh_model.fromJson(hieulenhoto))
+        .toList();
+  } else
+    throw Exception('Tải dữ liệu không thành công!!!');
+}
+
+class SecondScreen extends StatefulWidget {
+  final Hieulenh_model value;
+
+  SecondScreen({Key key, this.value}) : super(key: key);
+  @override
+  _SecondScreenState createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new Scaffold(
+      appBar: AppBar(
+        title: Text('Hiệu lệnh Ô tô'),
+      ),
+      body: new Card(
+        elevation: 5.0,
+        child: new Container(
+          decoration: BoxDecoration(border: Border.all(color: Colors.orange)),
+          padding: EdgeInsets.all(20.0),
+          margin: EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Padding(
+                child: Text(
+                  "Người điều khiển xe ô tô và các loại xe tương tự xe ô tô",
+                  style: new TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20.0),
+                  textAlign: TextAlign.center,
+                ),
+                padding: EdgeInsets.only(bottom: 20.0),
+              ),
+              Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Image.network(
+                  '${widget.value.anhhloto}',
+                  width: 90,
+                  height: 90,
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    new Container(
+                      padding: EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                        "Lỗi: " + '${widget.value.tenloihloto}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    new Container(
+                      padding: EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                        'Phạt tiền từ ${widget.value.phattienhloto}',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                    new Container(
+                        padding: EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          '+ Hình thức phạt bổ sung: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
+                    Text('    - ${widget.value.noidunghloto}')
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class HLOTO extends StatefulWidget {
+  @override
+  _HLOTOState createState() => _HLOTOState();
+}
+class _HLOTOState extends State<HLOTO>{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Hiệu lệnh ô tô'),
+      ),
+      body: new Center(
+        child: new FutureBuilder<List<Hieulenh_model>>(
+          future: dowloadJSON(),
+          builder: (context, index) {
+            if (index.hasData) {
+              List<Hieulenh_model> hieulenhotos = index.data;
+              return new Hieulenhoto(hieulenhotos);
+            } else if (index.hasError) {
+              return Text('${index.error}');
+            }
+            return new CircularProgressIndicator();
+          },
+        ),
+      ),
+    );
+  }
+}
