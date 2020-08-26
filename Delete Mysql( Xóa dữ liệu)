@@ -1,0 +1,11 @@
+onTap: () {
+              var url ='http://antoangiaothong.atwebpages.com/deletehieulenhoto.php';
+              http.post(url, body: {
+                'idHL': hieulenhoto.id
+              });
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (BuildContext context){
+                return HLOTO();
+              })
+            );
+          },
