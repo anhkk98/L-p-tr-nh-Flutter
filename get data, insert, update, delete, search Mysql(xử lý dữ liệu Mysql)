@@ -18,6 +18,10 @@ class Hieulenhoto extends StatefulWidget {
 }
 
 class _HieulenhotoState extends State<Hieulenhoto> {
+  List countries = [];
+  List filterCountries = [];
+  bool isSearching = false;
+
   Future getData() async {
     var url = 'http://antoangiaothong.atwebpages.com/gethieulenhoto.php';
     var response = await http.get(url);
@@ -26,131 +30,183 @@ class _HieulenhotoState extends State<Hieulenhoto> {
 
   @override
   void initState() {
+    getData().then((data) {
+      setState(() {
+        countries = filterCountries = data;
+      });
+    });
     super.initState();
+  }
+
+  void _filterCountries(value) {
+    setState(() {
+      filterCountries = countries
+          .where((country) => country['tenloihloto']
+              .toLowerCase()
+              .contains(value.toLowerCase())).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-            ),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return BottomNavigatorLoaixe();
-              }));
-            }),
-        title: Center(
-          child: Text("Hiệu lệnh ô tô"),
+        appBar: AppBar(
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                ),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return BottomNavigatorLoaixe();
+                  }));
+                }),
+            actions: [
+              isSearching
+                  ? IconButton(
+                      icon: Icon(Icons.cancel),
+                      onPressed: () {
+                        setState(() {
+                          this.isSearching = false;
+                          filterCountries = countries;
+                        });
+                      })
+                  : IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        setState(() {
+                          this.isSearching = true;
+                        });
+                      })
+            ],
+            title: !isSearching
+                ? Text('Hiệu lệnh ô tô')
+                : TextField(
+                    onChanged: (value) {
+                      _filterCountries(value);
+                    },
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                        hintText: "Tìm kiếm",
+                        hintStyle: TextStyle(color: Colors.white)),
+                  )),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.add,
+            color: Colors.yellow,
+          ),
+          backgroundColor: Colors.lightBlueAccent,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddUpdateHieulenhoto(),
+              ),
+            );
+            debugPrint('Clicked FloatingActionButton Button');
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddUpdateHieulenhoto(),
-            ),
-          );
-          debugPrint('Clicked FloatingActionButton Button');
-        },
-      ),
-      body: FutureBuilder(
-        future: getData(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
-          return snapshot.hasData
-              ? ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    List list = snapshot.data;
-                    return Slidable(
-                      actionPane: SlidableDrawerActionPane(),
-                      actionExtentRatio: 0.25,
-                      secondaryActions: <Widget>[
-                        IconSlideAction(
-                          caption: 'Sửa',
-                          color: Colors.black45,
-                          icon: Icons.edit,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddUpdateHieulenhoto(
-                                  list: list,
-                                  index: index,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        IconSlideAction(
-                          caption: 'Xóa',
-                          color: Colors.red,
-                          icon: Icons.delete,
-                          onTap: () {
-                            var url =
-                                'http://antoangiaothong.atwebpages.com/deletehieulenhoto.php';
-                            http.post(url, body: {
-                              'id': list[index]['id'],
-                            });
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return Hieulenhoto();
-                            }));
-                          },
-                        ),
-                      ],
-                      key: ObjectKey(snapshot),
-                      child: ListTile(
-                        title: new Container(
-                          padding: EdgeInsets.all(1.0),
-                          margin: EdgeInsets.all(5.0),
-                          child: new Row(
-                            children: [
-                              Image.network(
-                                list[index]['anhhloto'],
-                                height: 150,
-                                width: 100,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    new Container(
-                                      padding: EdgeInsets.only(bottom: 8.0),
-                                      child: Text(
-                                        "Lỗi: " + list[index]['tenloihloto'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
+        body: Center(
+          child: FutureBuilder(
+            future: getData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) print(snapshot.error);
+              return snapshot.hasData
+                  ? ListView.builder(
+                      itemCount: filterCountries.length,
+                      itemBuilder: (context, index) {
+                        List list = filterCountries;
+                        return Slidable(
+                          actionPane: SlidableDrawerActionPane(),
+                          actionExtentRatio: 0.25,
+                          secondaryActions: <Widget>[
+                            IconSlideAction(
+                              caption: 'Sửa',
+                              color: Colors.black45,
+                              icon: Icons.edit,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddUpdateHieulenhoto(
+                                      list: list,
+                                      index: index,
                                     ),
-                                    Text(
-                                      'Phạt tiền từ: ' +
-                                          list[index]['phattienhloto'],
-                                      style: TextStyle(color: Colors.red),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
+                                  ),
+                                );
+                              },
+                            ),
+                            IconSlideAction(
+                              caption: 'Xóa',
+                              color: Colors.red,
+                              icon: Icons.delete,
+                              onTap: () {
+                                var url =
+                                    'http://antoangiaothong.atwebpages.com/deletehieulenhoto.php';
+                                http.post(url, body: {
+                                  'id': list[index]['id'],
+                                });
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return Hieulenhoto();
+                                }));
+                              },
+                            ),
+                          ],
+                          key: ObjectKey(snapshot),
+                          child: ListTile(
+                            title: new Container(
+                              padding: EdgeInsets.all(1.0),
+                              margin: EdgeInsets.all(5.0),
+                              child: new Row(
+                                children: [
+                                  Image.network(
+                                    list[index]['anhhloto'],
+                                    height: 150,
+                                    width: 100,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        new Container(
+                                          padding: EdgeInsets.only(bottom: 8.0),
+                                          child: Text(
+                                            "Lỗi: " +
+                                                list[index]
+                                                    ['tenloihloto'],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text(
+                                          'Phạt tiền từ: ' +
+                                              list[index]
+                                                  ['phattienhloto'],
+                                          style: TextStyle(color: Colors.red),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            onTap: () {},
                           ),
-                        ),
-                        onTap: () {},
-                      ),
-                    );
-                  })
-              : CircularProgressIndicator();
-        },
-      ),
-    );
+                        );
+                      })
+                  : CircularProgressIndicator();
+            },
+          ),
+        ));
   }
 }
 
