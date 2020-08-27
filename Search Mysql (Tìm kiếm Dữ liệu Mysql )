@@ -63,4 +63,4 @@ itemBuilder: (context, index) {
                   }
 
 
-Thay đổi  filterCountries với mấy chỗ gọi dữ liệu truyền vào.
+Thay đổi  list với mấy chỗ gọi dữ liệu truyền vào.
