@@ -1,0 +1,66 @@
+List countries = [];
+  List filterCountries = [];
+  bool isSearching = false;
+  
+@override
+  void initState() {
+    getData().then((data) {
+      setState(() {
+        countries = filterCountries = data;
+      });
+    });
+    super.initState();
+  }
+
+  void _filterCountries(value) {
+    setState(() {
+      filterCountries = countries
+          .where((country) => country['tenloichoto']
+          .toLowerCase()
+          .contains(value.toLowerCase())).toList();
+    });
+  }  
+  ----------------------------trong Scaffor-----------------------------
+  actions: [
+            isSearching
+                ? IconButton(
+                icon: Icon(Icons.cancel),
+                onPressed: () {
+                  setState(() {
+                    this.isSearching = false;
+                    filterCountries = countries;
+                  });
+                })
+                : IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  setState(() {
+                    this.isSearching = true;
+                  });
+                })
+          ],
+          title: !isSearching
+              ? Text('Chuyến hướng ô tô')
+              : TextField(
+            onChanged: (value) {
+              _filterCountries(value);
+            },
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+                hintText: "Tìm kiếm",
+                hintStyle: TextStyle(color: Colors.white)),
+          )
+-------------------------------
+ở ListView.builder:
+itemCount: filterCountries.length,
+itemBuilder: (context, index) {
+                  List list = filterCountries;
+                  .....
+                  }
+
+
+Thay đổi  filterCountries với mấy chỗ gọi dữ liệu truyền vào.
