@@ -1,0 +1,22 @@
+ bool _isFavorited = true;
+  void _toggleFavorite() {
+    setState(() {
+      if (_isFavorited) {
+        _isFavorited = false;
+      } else {
+        _isFavorited = true;
+      }
+    });
+  }
+  
+  ------------------------------------------------
+IconButton(
+  onPressed: (){
+  _toggleFavorite();
+  },
+  icon: Icon( _isFavorited ?
+  Icons.favorite: Icons.favorite_border,
+  size: 20,
+  color:_isFavorited ? Colors.red:null,
+  ),
+),
