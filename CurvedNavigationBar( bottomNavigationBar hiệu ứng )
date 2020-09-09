@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter_design_ui/Home/Anhdong/Flare.dart';
+import 'package:flutter_design_ui/Home/Loaigiay/Adidas.dart';
+import 'file:///F:/Flutter/flutter_design_ui/lib/Home/Loaigiay/Model/Convert.dart';
+import 'package:flutter_design_ui/Home/Loaigiay/Nike.dart';
+import 'package:flutter_design_ui/Home/PageProducts.dart';
+import 'package:flutter_design_ui/Login/Login1.dart';
+
+
+class Home1 extends StatefulWidget {
+  @override
+  _Home1State createState() => _Home1State();
+}
+
+class _Home1State extends State<Home1> {
+  int pageIndex = 0;
+
+  final PageProducts _page1 = PageProducts();
+  final Nike _page2 = Nike();
+  final Flare _page3 = Flare();
+  final Adidas _page4 = Adidas();
+  final Convert _page5 = Convert();
+
+  Widget _showPage = new PageProducts();
+
+  Widget _pageChooser(int page){
+    switch(page){
+      case 0:
+        return _page1;
+        break;
+      case 1:
+        return _page2;
+        break;
+      case 2:
+        return _page3;
+        break;
+      case 3:
+        return _page4;
+        break;
+      case 4:
+        return _page5;
+        break;
+      default:
+        return new Container(
+          child: new Center(
+            child: new Text("data"),
+          ),
+        );
+      
+
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        bottomNavigationBar: CurvedNavigationBar(
+          index: pageIndex,
+          height: 60.0,
+          items: <Widget>[
+            Icon(Icons.account_circle, size: 30,color: Colors.white,),
+            ImageIcon(AssetImage('assets/image/nike.png'),size: 35.0,),
+            Icon(Icons.home, size: 30,color: Colors.white),
+            ImageIcon(AssetImage('assets/image/adidas.png'),size: 35.0,),
+            ImageIcon(AssetImage('assets/image/convert.png'),size: 35.0,)
+          ],
+          color: Colors.red,
+          buttonBackgroundColor: Colors.red,
+          backgroundColor: Colors.white,
+          animationCurve: Curves.easeInOut,
+          animationDuration: Duration(milliseconds: 400),
+          onTap: (int tappedIndex) {
+            setState(() {
+              _showPage = _pageChooser(tappedIndex);
+            });
+          },
+        ),
+      body: Container(
+        child: Center(
+          child: _showPage,
+        ),
+      ),
+        );
+  }
+}
