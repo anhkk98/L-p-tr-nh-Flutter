@@ -1,0 +1,13 @@
+add : avatar_glow: ^1.2.0
+
+-------------------------
+
+AvatarGlow(
+                  endRadius: 90,
+                  duration: Duration(seconds: 2),
+                  glowColor: Colors.white24,
+                  repeat: true,
+                  repeatPauseDuration: Duration(seconds: 1),
+                  startDelay: Duration(seconds: 1),
+                  child: Hero(tag: 'iconcuoi',child: Image.asset('assets/image/iconcuoi.png',width: 100.0,height: 100.0,),)
+                ),
