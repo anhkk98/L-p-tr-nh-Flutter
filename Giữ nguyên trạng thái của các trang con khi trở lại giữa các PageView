@@ -1,0 +1,15 @@
+Sử dụng AutomaticKeepAliveClientMixin cho trang con: 
+
+class _Gridview3State extends State<Gridview3> with AutomaticKeepAliveClientMixin<Gridview3>{}
+
+--------
+thêm :
+@override
+  bool get wantKeepAlive => true;
+-->
+-----------
+@override
+  bool get wantKeepAlive => true;
+  @override
+  Widget build(BuildContext context) {}
+---------------
