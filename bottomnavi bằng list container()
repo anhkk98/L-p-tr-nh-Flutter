@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bottomnavi/Model/Luatxemay.dart';
+import 'package:flutter_bottomnavi/pages/DSApp.dart';
+import 'package:flutter_bottomnavi/pages/HomeApp.dart';
+import 'package:flutter_bottomnavi/pages/YTApp.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  static const List<IconData> iconbottom = const [
+    Icons.library_books,
+    Icons.show_chart,
+    Icons.remove,
+    Icons.format_quote,
+    Icons.person_outline
+  ];
+
+  int selectedIndex = 0;
+
+  PageController _pageController = PageController();
+  List<Widget> _screens = [
+    HomeApp(), DSApp(),DSApp(),DSApp(),YTApp()
+  ];
+  int _selectedIndex = 0;
+  void _onPageChaned(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void _itemTapper(int selectedIndex1) {
+    _pageController.jumpToPage(selectedIndex1);
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        color: Colors.transparent,
+        child: Column(
+          children: [
+            Expanded(
+
+              child: PageView(
+                controller: _pageController,
+                children: _screens,
+                onPageChanged: _onPageChaned,
+                physics: NeverScrollableScrollPhysics(),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              height: 60,
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(20.0))),
+              child: GestureDetector(
+                onTap: (){
+                },
+                child: ListView.builder(
+                  itemCount: iconbottom.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => GestureDetector(
+                    onTap: (){
+                      if (index == 2) {
+                        selectedIndex != index;
+                      } else {
+                        selectedIndex =index;
+                        _itemTapper(selectedIndex);
+                      }
+                    },
+                    child: Container(
+                      width: 74,
+                      padding: EdgeInsets.only(top: 10.0),
+                      margin: EdgeInsets.all(3),
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: [
+                          Icon(iconbottom[index],
+                              color: selectedIndex == index ? Colors.black : Colors.black38),
+                          Icon(
+                            Icons.remove,
+                            color: selectedIndex == index ? Colors.black : Colors.transparent,
+                            size: 15,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+}
