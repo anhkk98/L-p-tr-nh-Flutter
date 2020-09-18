@@ -1,0 +1,147 @@
+import 'package:flutter/material.dart';
+
+class StartHome extends StatefulWidget{
+
+  @override
+  _StartHomeState createState() => _StartHomeState();
+}
+
+class _StartHomeState extends State<StartHome>{
+  @override
+  Widget build(BuildContext context) {
+    Color color = Theme.of(context).backgroundColor;
+    // TODO: implement build
+    return Scaffold(
+      backgroundColor: Colors.grey,
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0, top: 50.0),
+                    child: Text(
+                      "Good afternoon,",
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0, top: 5),
+                    child: Text(
+                      "ád",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 70)),
+                  Container(
+                    alignment: Alignment.center,
+                    height: 300,
+                    child: Stack(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(20.0),
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(
+                              top: 40.0, left: 20.0, right: 20.0),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(30.0)),
+                              color: Colors.white),
+                          child: Column(
+                            children: [
+                              Padding(padding: EdgeInsets.only(top: 20.0)),
+                              Text(
+                                "I'm so excited to start this \njourney with you, HoangAnh!",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'FredokaOne'),
+                                textAlign: TextAlign.center,
+                              ),
+                              Padding(padding: EdgeInsets.only(bottom: 10.0)),
+                              Text(
+                                "Bạn hãy bắt đầu bằng việc viết 1 trạng thái của bản thân, cùng trải nghiệm những thứ mới lạ từ chương trình mang lại. Đánh giá 500 sao cho APP",
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 15),
+                                textAlign: TextAlign.justify,
+                              ),
+                              Padding(padding: EdgeInsets.only(bottom: 20.0)),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      top: 15.0,
+                                      bottom: 15.0,
+                                      right: 50.0,
+                                      left: 50.0),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -6,
+                                          color: color.withOpacity(.8),
+                                          blurRadius: 8,
+                                          offset: Offset(0, 18))
+                                    ],
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(50.0)),
+                                    color: color,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(bottom: 0.0),
+                                    child: Text(
+                                      'WRITE ON',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                            top: 7,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -6,
+                                          color: Colors.grey.withOpacity(.8),
+                                          blurRadius: 2,
+                                          offset: Offset(0, 8))
+                                    ]),
+                                child: Hero(
+                                  tag: 'iconcuoi',
+                                  child: Image.asset(
+                                    'assets/image/gif.gif',
+                                    width: 70.0,
+                                    height: 70.0,
+                                  ),
+                                ))),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
