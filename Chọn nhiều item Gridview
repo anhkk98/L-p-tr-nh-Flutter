@@ -1,0 +1,60 @@
+
+import 'package:flutter/material.dart';
+import 'package:flutter_app_reflectly/HomeChinh/Model/Bottom3.dart';
+
+class Thongtin extends StatefulWidget {
+  @override
+  _ThongtinState createState() => _ThongtinState();
+}
+
+class _ThongtinState extends State<Thongtin>
+    with AutomaticKeepAliveClientMixin<Thongtin> {
+
+  final List<Modelbieucam> listBieucam = Modelbieucam.list;
+  final Set<Modelbieucam> _saved = new Set<Modelbieucam>();
+  @override
+  bool get wantKeepAlive => true;
+  @override
+  Widget build(BuildContext context) {
+    Color color = Theme.of(context).backgroundColor;
+    return Container(
+        height: 410,
+        color: color,
+        child: GridView.builder(
+          itemCount: listBieucam.length,
+          scrollDirection: Axis.horizontal,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
+          itemBuilder: (BuildContext context, int index) {
+            return  _buildRow(listBieucam[index]);
+          },
+        ));
+  }
+  Widget _buildRow(Modelbieucam modelbieucam){
+    final bool anhien = _saved.contains(modelbieucam);
+    return GestureDetector(
+      onTap: (){
+        setState(() {
+          if( anhien){
+            _saved.remove(modelbieucam);
+          }else{
+            _saved.add(modelbieucam);
+          }
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            color: anhien ?  Colors.purple[300]: Colors.transparent),
+        alignment: Alignment.center,
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            modelbieucam.icon, //just for testing, will fill with image later
+            Text(modelbieucam.ten,style: TextStyle(color: Colors.white,fontFamily: "FredokaOne"),),
+          ],
+        ),
+      ),
+    );
+  }
+}
