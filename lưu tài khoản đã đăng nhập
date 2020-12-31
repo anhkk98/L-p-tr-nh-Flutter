@@ -1,0 +1,21 @@
+thêm thư viện: shared_preferences: ^0.5.7+3
+----------------------------------------------
+ở main.dart:
+thêm trong: 
+void main(){
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var email = prefs.getString('email');
+  runApp(
+    MaterialApp(
+      home: email == null ? : LoginPage() : HomePage()
+    )
+  )
+}
+---------------------------------------------
+ở nút đăng nhập thêm: (lưu tài khoản vào key email với dữ liệu tài khoản đã nhập là _email)
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString('email', _email);
+-----------------------------------------------
+thoát tài khoản đã lưu:
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.remove('email');
