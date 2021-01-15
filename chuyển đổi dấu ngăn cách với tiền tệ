@@ -1,0 +1,5 @@
+  final formatter = new NumberFormat("###,###.###", "pt-br");
+
+int tien = 2000000000;
+
+Text(formatter.format(tien));
